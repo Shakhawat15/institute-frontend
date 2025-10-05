@@ -7,6 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "./helper/SessionHelper";
 
 // Import Backend Pages
+import LoginPage from "./pages/Backend/Login/LoginPage";
+import DashboardPage from "./pages/Backend/Dashboard/DashboardPage";
+import InstitutePage from "./pages/Backend/Institute/InstitutePage";
 
 // Import Frontend Pages
 import HomePage from "./pages/Frontend/Home/HomePage";
@@ -17,7 +20,9 @@ function App() {
       <Fragment>
         <BrowserRouter>
           <Routes>
-            <Route exact path="/" element={<HomePage />} />
+            <Route exact path="/" element={<LoginPage />} />
+            <Route exact path="/dashboard" element={<DashboardPage />} />
+            <Route exact path="/institute" element={<InstitutePage />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
           <ToastContainer />

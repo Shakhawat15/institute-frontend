@@ -1,0 +1,139 @@
+.homepage-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f1f5f9;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+/* Search Card */
+.search-section {
+  background: #01579b;
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.search-form select,
+.search-form input {
+  background: #e3f2fd;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #0d47a1;
+  outline: none;
+  width: 100%;
+}
+
+.search-form input::placeholder {
+  color: #1565c0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  grid-column: span 2;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background: #ffffff;
+  color: #01579b;
+  font-weight: bold;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #e0f2f1;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #ffffff;
+  font-weight: bold;
+  border: 2px solid white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #01579b;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th {
+  background: #0288d1;
+  color: white;
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.results-table td {
+  padding: 0.7rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.results-table tr:hover {
+  background: #f5f5f5;
+}
+
+.status {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.verified {
+  color: #2e7d32;
+}
+
+.status.pending {
+  color: #c62828;
+}
+
+/* Messages */
+.loading,
+.no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #01579b;
+  font-weight: bold;
+  margin-top: 2rem;
+}

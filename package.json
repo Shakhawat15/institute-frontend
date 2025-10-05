@@ -21,6 +21,7 @@
     "axios": "^1.7.2",
     "date-fns": "^4.1.0",
     "dropify": "^0.2.2",
+    "file-saver": "^2.0.5",
     "formik": "^2.4.6",
     "jodit-react": "^4.1.2",
     "prop-types": "^15.8.1",
@@ -36,6 +37,7 @@
     "react-router-dom": "^6.24.1",
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.12.4",
+    "xlsx": "^0.18.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {
