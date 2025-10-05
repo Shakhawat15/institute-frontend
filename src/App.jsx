@@ -11,9 +11,6 @@ import LoginPage from "./pages/Backend/Login/LoginPage";
 import DashboardPage from "./pages/Backend/Dashboard/DashboardPage";
 import InstitutePage from "./pages/Backend/Institute/InstitutePage";
 
-// Import Frontend Pages
-import HomePage from "./pages/Frontend/Home/HomePage";
-
 function App() {
   if (getToken()) {
     return (
@@ -34,7 +31,7 @@ function App() {
       <Fragment>
         <BrowserRouter>
           <Routes>
-            <Route exact path="/" element={<HomePage />} />
+            <Route exact path="/" element={<LoginPage />} />
           </Routes>
           <ToastContainer />
         </BrowserRouter>
