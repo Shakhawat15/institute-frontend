@@ -20,15 +20,6 @@ const InstitutePage = () => {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
-  // Modal state
-  const [showModal, setShowModal] = useState(false);
-  const [selectedInstitute, setSelectedInstitute] = useState(null);
-  const [emailForm, setEmailForm] = useState({
-    subject: "",
-    message: "",
-  });
-  const [sending, setSending] = useState(false);
-
   // Dynamically load districts & thanas
   const availableDistricts = filters.division
     ? Object.keys(bangladeshData[filters.division] || {})
@@ -84,18 +75,23 @@ const InstitutePage = () => {
     fetchProducts();
   };
 
-  // ✅ Download Excel (excluding *_id fields)
+  // ✅ Download Excel
+  // ✅ Download Excel (excluding all *_id or id fields)
   const handleDownloadExcel = () => {
     if (!products.length) {
       ErrorToast("No data to export");
       return;
     }
 
+    // 1. Get all keys from the first object
     const allKeys = Object.keys(products[0] || {});
+
+    // 2. Filter out any field containing 'id' (case insensitive)
     const filteredKeys = allKeys.filter(
       (key) => !key.toLowerCase().includes("id")
     );
 
+    // 3. Map data only with filtered keys
     const exportData = products.map((item, index) => {
       const newObj = { SL: index + 1 };
       filteredKeys.forEach((key) => {
@@ -104,10 +100,12 @@ const InstitutePage = () => {
       return newObj;
     });
 
+    // 4. Convert to Excel sheet
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Institutes");
 
+    // 5. Create Excel file and download
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
@@ -116,40 +114,6 @@ const InstitutePage = () => {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(blob, "Institute_Search_Results.xlsx");
-  };
-
-  // ✅ Handle open modal
-  const handleOpenModal = (institute) => {
-    setSelectedInstitute(institute);
-    setEmailForm({ subject: "", message: "" });
-    setShowModal(true);
-  };
-
-  // ✅ Handle send email
-  const handleSendEmail = async () => {
-    if (!emailForm.subject || !emailForm.message) {
-      ErrorToast("Please fill out all fields");
-      return;
-    }
-
-    setSending(true);
-    try {
-      await axios.post(
-        `${baseURL}/institutes/send-email`,
-        {
-          to: selectedInstitute.email,
-          subject: emailForm.subject,
-          message: emailForm.message,
-        },
-        AxiosHeader
-      );
-      setShowModal(false);
-      alert("✅ Email sent successfully!");
-    } catch (error) {
-      ErrorToast(error.response?.data?.message || "Failed to send email");
-    } finally {
-      setSending(false);
-    }
   };
 
   return (
@@ -262,7 +226,7 @@ const InstitutePage = () => {
               >
                 Reset
               </button>
-
+              {/* ✅ Excel Download Button */}
               {searched && products.length > 0 && (
                 <button
                   type="button"
@@ -294,7 +258,6 @@ const InstitutePage = () => {
                       <th className="p-2 border">Email</th>
                       <th className="p-2 border">Mobile</th>
                       <th className="p-2 border">Status</th>
-                      <th className="p-2 border">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -329,20 +292,6 @@ const InstitutePage = () => {
                         >
                           {item.verification}
                         </td>
-                        <td className="p-2 border text-center">
-                          {item.email ? (
-                            <button
-                              onClick={() => handleOpenModal(item)}
-                              className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md text-xs"
-                            >
-                              ✉️ Send Email
-                            </button>
-                          ) : (
-                            <span className="text-gray-400 text-xs">
-                              No Email
-                            </span>
-                          )}
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -360,53 +309,6 @@ const InstitutePage = () => {
           </div>
         </div>
       </div>
-
-      {/* ✅ Email Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 relative">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">
-              Send Email to {selectedInstitute?.instituteName}
-            </h3>
-
-            <input
-              type="text"
-              placeholder="Subject"
-              value={emailForm.subject}
-              onChange={(e) =>
-                setEmailForm({ ...emailForm, subject: e.target.value })
-              }
-              className="border border-gray-300 w-full rounded-md px-3 py-2 mb-3"
-            />
-
-            <textarea
-              rows="5"
-              placeholder="Write your message..."
-              value={emailForm.message}
-              onChange={(e) =>
-                setEmailForm({ ...emailForm, message: e.target.value })
-              }
-              className="border border-gray-300 w-full rounded-md px-3 py-2 mb-4"
-            />
-
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSendEmail}
-                disabled={sending}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-60"
-              >
-                {sending ? "Sending..." : "Send Email"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </MasterLayout>
   );
 };
